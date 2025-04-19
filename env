@@ -20,7 +20,7 @@ CI_ENVIRONMENT = development
 # APP
 #--------------------------------------------------------------------
 
-app.baseURL = 'http://publicom.local'
+# app.baseURL = ''
 # If you have trouble with `.`, you could also use `_`.
 # app_baseURL = ''
 # app.forceGlobalSecureRequests = false
@@ -30,15 +30,13 @@ app.baseURL = 'http://publicom.local'
 # DATABASE
 #--------------------------------------------------------------------
 
-database.default.hostname = localhost
-database.default.database = publicom
-database.default.username = adminpublicom
-database.default.password = publicom82300
-# database.default.username = root
-# database.default.password = 
-database.default.DBDriver = MySQLi
-database.default.DBPrefix =
-database.default.port = 3306
+# database.default.hostname = localhost
+# database.default.database = 
+# database.default.username =
+# database.default.password =
+# database.default.DBDriver = MySQLi
+# database.default.DBPrefix =
+# database.default.port = 3306
 
 # If you use MySQLi as tests, first update the values of Config\Database::$tests.
 # database.tests.hostname = localhost
