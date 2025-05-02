@@ -29,7 +29,6 @@
                 <?= $admin ? '<li class="menu-item hidden"><a href="'.url_to('clients').'">Gestion Communes</a></li>' : '' ?>
             <li class="menu-item hidden"><a href="<?= url_to('message') ?>">Gestion Messages</a></li>
             <li class="menu-item hidden"><a href="<?= url_to('panneaux') ?>">Gestion Panneaux</a></li>
-            <li class="menu-item hidden"><a href="">Test Modif</a></li>
             <li class="menu-item hidden"><a href="<?= url_to('logout') ?>">Se Déconnecter</a></li>
         </ul>
     </div>
