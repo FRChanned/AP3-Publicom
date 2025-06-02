@@ -11,26 +11,28 @@ class Utilisateur extends BaseController
     private $userModel;
     private $communeModel;
 
+    // Constructeur Instanciant les variables userModel et communeModel
     public function __construct()
     {
         $this->userModel = model('UserModel');
         $this->communeModel = model('CommuneModel');
     }
 
+    // Méthode Affichant la liste des utilisateurs
     public function index()
     {
+        /* On vérifie si l'utilisateur est authentifié.
+        *
+        *  Si l'utilisateur ne fait pas partie du groupe admin,
+        *  alors il sera redirigé vers la page d'accueil du site.
+        */ 
         $user = auth()->user();
         if (! $user->inGroup('admin')) {
             return redirect('index');
         }
-        // $user = $this->userModel->findJoinAll();
+
         $users = $this->userModel->getAll();
 
-        // // Get the User Provider (UserModel by default)
-        // $users = auth()->getProvider();
-
-        // // Find by the user_id
-        // $user = $users->findAll();
         // var_dump($users);
         // die();
 
@@ -39,6 +41,7 @@ class Utilisateur extends BaseController
         ]);
     }
 
+    // Méthode qui renvoie le formulaire d'ajout d'un utilisateur (avec la liste des communes)
     public function ajout()
     {
         $user = auth()->user();
@@ -51,14 +54,9 @@ class Utilisateur extends BaseController
         ]);
     }
 
+    // Méthode effectuant la création en base de données du compte utilisateur
     public function create()
     {
-        // $userData = $this->request->getPost();
-        // // var_dump($userData);
-        // // die();
-        // $this->userModel->save($userData);
-
-
         // Get the User Provider (UserModel by default)
         $users = auth()->getProvider();
 
@@ -68,6 +66,7 @@ class Utilisateur extends BaseController
             'password' => $this->request->getPost('MOTDEPASSE'),
             'IDCOMMUNE' => $this->request->getPost('IDCOMMUNE'),
         ]);
+
         // var_dump($userData);
         // die();
         $users->save($user);
@@ -81,6 +80,7 @@ class Utilisateur extends BaseController
         return redirect('utilisateur');
     }
 
+    // Méthode qui renvoie le formulaire de modification d'un utilisateur (avec la liste des communes)
     public function modif($userId)
     {
         $user = auth()->user();
@@ -101,14 +101,9 @@ class Utilisateur extends BaseController
         ]);
     }
 
+    // Méthode effectuant la mise à jour en base de données du compte utilisateur
     public function update()
     {
-        // $userData = $this->request->getPost();
-        // var_dump($userData);
-        // die();
-        // $this->userModel->save($userData);
-        // return redirect('utilisateur');
-
         // Get the User Provider (UserModel by default)
         $users = auth()->getProvider();
 
@@ -135,16 +130,13 @@ class Utilisateur extends BaseController
         return redirect('utilisateur');
     }
 
+    // Méthode effectuant la suppression en base de données du compte utilisateur
     public function delete()
     {
         $idUser = $this->request->getPost(['IDUTILISATEUR']); // Récup ID Utilisateur
-        // $this->userModel->delete($userId);
-        // return redirect('utilisateur');
-        // var_dump($userId);
-        // die();
 
         // Get the User Provider (UserModel by default)
-        $users = auth()->getProvider(); // Chépa
+        $users = auth()->getProvider();
 
         $users->delete($idUser['IDUTILISATEUR'], true); // Supprime l'utilisateur en base ayant l'ID récupéré au préalable
         return redirect('utilisateur');

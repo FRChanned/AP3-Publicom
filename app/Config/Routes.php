@@ -58,4 +58,3 @@ $routes->get('modifier_utilisateur(:num)', 'Utilisateur::modif/$1', ['as' => 'mo
 $routes->post('modifier_utilisateur', 'Utilisateur::update', ['as' => 'updateUtilisateur']);
 
 $routes->post('suppr_utilisateur', 'Utilisateur::delete', ['as' => 'supprUtilisateur']);
-

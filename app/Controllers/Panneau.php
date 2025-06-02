@@ -8,16 +8,18 @@ class Panneau extends BaseController
     private $panneauxModel;
     private $communeModel;
 
+    // Constructeur instanciant les variables panneauxModel et communeModel
     public function __construct()
     {
         $this->panneauxModel = model('PanneauModel');
         $this->communeModel = model('CommuneModel');
     }
 
+    // Méthode renvoyant la liste des panneaux
     public function index(): string
     {
         $user = auth()->user();
-        if (! $user->inGroup('admin')) {
+        if (!$user->inGroup('admin')) {
             $userId = $user->IDCOMMUNE;
             // dd($userId);
             $listePanneau = $this->panneauxModel->getAllPanneauByCommune($userId);
@@ -28,18 +30,17 @@ class Panneau extends BaseController
             return view('panneaux/gestion_panneaux', [
                 'listePanneaux' => $listePanneau
             ]);
+        } else {
+
+            $panneaux = $this->panneauxModel->findJoinAll();
+
+            return view('panneaux/gestion_panneaux', [
+                'listePanneaux' => $panneaux
+            ]);
         }
-        else {
-
-        $panneaux = $this->panneauxModel->findJoinAll();
-
-        return view('panneaux/gestion_panneaux', [
-            'listePanneaux' => $panneaux
-        ]);
-    }
     }
 
-
+    // Méthode qui renvoie le formulaire d'ajout d'un panneau (avec la liste des communes)
     public function ajout(): string
     {
         $user = auth()->user();
@@ -68,27 +69,30 @@ class Panneau extends BaseController
         }
     }
 
+    // Méthode effectuant la création en base de données du panneau
     public function create()
     {
-
-        $panneauAjout = $this->request->getPost();
+        $panneauAjout = $this->request->getPost(); // Récupération des données du formulaire
 
         $this->panneauxModel->save($panneauAjout);
         return redirect('panneaux');
     }
 
+    // Méthode qui renvoie le formulaire de modification d'un panneau (avec la liste des communes)
     public function modif($idPanneau): string
     {
-        $panneauId = $this->panneauxModel->find($idPanneau);
-        $communes = $this->communeModel->findCommune();
+        $panneauId = $this->panneauxModel->find($idPanneau); // Récupération des données du panneau avec son id
+        $communes = $this->communeModel->findCommune(); // Récupération de la liste des communes
         return view('panneaux/modifier_panneaux', [
             'panneau' => $panneauId,
             'commune' => $communes
         ]);
     }
+    
+    // Méthode effectuant la mise à jour en base de données du panneau
     public function update()
     {
-        $panneau = $this->request->getPost();
+        $panneau = $this->request->getPost(); // Récupération des données du formulaire
         // var_dump($panneau);
         // die();
         $this->panneauxModel->save($panneau);
@@ -96,10 +100,11 @@ class Panneau extends BaseController
         return redirect('panneaux');
     }
 
+    // Méthode effectuant la suppression en base de données du panneau
     public function delete()
     {
-        $idPanneau = $this->request->getPost('IDPANNEAU');
-        $this->panneauxModel->delete($idPanneau);
+        $idPanneau = $this->request->getPost('IDPANNEAU'); // Récup de l'id du panneau
+        $this->panneauxModel->delete($idPanneau); // Suppression du panneau avec l'id du panneau récupéré
         return redirect('panneaux');
     }
 }

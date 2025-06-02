@@ -44,19 +44,31 @@ class MessageModel extends Model
     {
         return $this
             ->select('message.IDMESSAGE, message.IDCOMMUNE, message.ETAT, message.TEXTE, message.COULEUR, message.TAILLE, 
-        panneau.IDPANNEAU, panneau.REFERENCE')
+        panneau.IDPANNEAU, prestataire.NOMPRESTATAIRE')
             ->join('commune', 'commune.IDCOMMUNE = message.IDCOMMUNE')
             ->join('panneau', 'commune.IDCOMMUNE = panneau.IDCOMMUNE')
+            ->join('prestataire', 'message.IDMESSAGE = prestataire.IDMESSAGE')
             ->findAll();
     }
 
     public function getAllMessageByCommune($IDCOMMUNE)
     {
         return $this->select('message.IDMESSAGE, message.IDCOMMUNE, message.ETAT, message.TEXTE, message.COULEUR, message.TAILLE, 
-        panneau.IDPANNEAU')
+        panneau.IDPANNEAU, prestataire.NOMPRESTATAIRE')
             ->join('commune', 'commune.IDCOMMUNE = message.IDCOMMUNE')
             ->join('panneau', 'commune.IDCOMMUNE = panneau.IDCOMMUNE')
-            ->where('message.IDCOMMUNE = ', $IDCOMMUNE)
+            ->join('prestataire', 'message.IDMESSAGE = prestataire.IDMESSAGE')
+            ->where('message.IDCOMMUNE = '. $IDCOMMUNE)
+            ->findAll();
+    }
+
+    public function getAllMessages()
+    {
+        return $this->select('message.IDMESSAGE, message.IDCOMMUNE, message.ETAT, message.TEXTE, message.COULEUR, message.TAILLE, 
+        panneau.IDPANNEAU, prestataire.NOMPRESTATAIRE')
+            ->join('commune', 'commune.IDCOMMUNE = message.IDCOMMUNE')
+            ->join('panneau', 'commune.IDCOMMUNE = panneau.IDCOMMUNE')
+            ->join('prestataire', 'message.IDMESSAGE = prestataire.IDMESSAGE')
             ->findAll();
     }
 

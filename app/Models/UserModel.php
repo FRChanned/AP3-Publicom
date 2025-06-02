@@ -20,6 +20,10 @@ class UserModel extends ShieldUserModel
         ];
     }
 
+    /* Retourne la liste des utilisateurs
+    *
+    *  @param none
+    */
     public function getAll() //pour index utilisateur
     {
         return $this->select('commune.NOM, commune.DEPARTEMENT, auth_identities.secret AS user_mail, users.id')
@@ -29,6 +33,10 @@ class UserModel extends ShieldUserModel
             ->findAll();
     }
 
+    /* Retourne l'utilisateur selon l'id donné en paramètre
+    *
+    *  @param $userId
+    */
     public function getById($userId) //pour modif
     {
         return $this->select('users.id, users.IDCOMMUNE, users.username, auth_identities.secret AS user_mail, auth_identities.secret2 as passwd')
@@ -39,6 +47,10 @@ class UserModel extends ShieldUserModel
         ->find($userId);
     }
 
+    /* Retourne la commune auquel l'utilisateur fait partie
+    *
+    *  @param $userId
+    */
     public function getCommuneDefault($userId) //aussi pour modif car besoin de l'idcommune
     {
         return $this->select('*')
@@ -47,12 +59,21 @@ class UserModel extends ShieldUserModel
         ->find();
     }
 
+    /* Retourne les données de l'utilisateur selon
+    *  l'id de la commune (l'utilisateur est la commune)
+    *
+    *  @param $IDCOMMUNE
+    */
     public function getIdUser($IDCOMMUNE){
         return $this->select('*')
         ->where('users.IDCOMMUNE', $IDCOMMUNE);
         
     }
 
+    /* Retourne la liste des utilisateurs selon l'id de la commune donné en paramètre
+    *
+    *  @param $IDCOMMUNE
+    */
     public function getAllByIdCommune($IDCOMMUNE) //pour index utilisateur
     {
         return $this->select('commune.NOM, commune.DEPARTEMENT, auth_identities.secret AS user_mail, users.id, users.IDCOMMUNE')
@@ -63,13 +84,21 @@ class UserModel extends ShieldUserModel
             ->findAll();
     }
 
+    /* Supprimme la donnée 'AuthIdentities' de la commune de la table auth_identities
+    *
+    *  @param $idUser
+    */
     public function deleteAuthIdentities($idUser){
-        $db = \Config\Database::Connect();
-        $builder = $db->table('auth_identities');
-        $builder->where('auth_identities.user_id', $idUser);
+        $db = \Config\Database::Connect(); // Connexion à la base de données
+        $builder = $db->table('auth_identities'); // Récupère la table 'auth_identities'
+        $builder->where('auth_identities.user_id', $idUser); // Récupération de la donnée avec l'id de l'utilisateur
         $builder->delete();
     }
 
+    /* Supprimme la donnée 'AuthPermissionsUser' de la commune de la table auth_permissions_users
+    *
+    *  @param $idUser
+    */
     public function deleteAuthPermissionsUsers($idUser){
         $db = \Config\Database::Connect();
         $builder = $db->table('auth_permissions_users');
@@ -77,6 +106,10 @@ class UserModel extends ShieldUserModel
         $builder->delete();
     }
     
+    /* Supprimme la donnée 'AuthGroupsUsers' de la commune de la table auth_groups_users
+    *
+    *  @param $idUser
+    */
     public function deleteAuthGroupsUsers($idUser){
         $db = \Config\Database::Connect();
         $builder = $db->table('auth_groups_users');
@@ -84,6 +117,10 @@ class UserModel extends ShieldUserModel
         $builder->delete();
     }
     
+    /* Supprimme la donnée 'AuthRememberTokens' de la commune de la table auth_remember_tokens
+    *
+    *  @param $idUser
+    */
     public function deleteAuthRememberTokens($idUser){
         $db = \Config\Database::Connect();
         $builder = $db->table('auth_remember_tokens');
@@ -91,6 +128,11 @@ class UserModel extends ShieldUserModel
         $builder->delete();
     }
 
+    /* Supprimme l'utilisateur après que les méthodes deleteAuthIdentities, deleteAuthPermissionsUsers,
+    *  deleteAuthGroupsUsers, deleteAuthRememberTokens soient exécutées.
+    *
+    *  @param $IDCOMMUNE
+    */
     public function deleteUsers($IDCOMMUNE){
         $db = \Config\Database::Connect();
         $builder = $db->table('users');

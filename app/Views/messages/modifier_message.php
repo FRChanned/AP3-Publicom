@@ -25,6 +25,16 @@
     <label for="couleur">Couleur :</label>
     <input type="text" id="couleur" name="COULEUR" value="<?= $message['COULEUR'] ?>" required />
 
+    <label for="PRESTATAIRE">Prestataire</label>
+    <select name="IDPRESTATAIRE">
+        <option value="">Choisissez un prestataire</option>
+        <?php
+        foreach ($listePrestataires as $prestataire) {
+            echo "<option value=" . $prestataire['IDPRESTATAIRE'] . ">" . $prestataire['NOMPRESTATAIRE'] . "</option>";
+        }
+        ?>
+    </select>
+
    <!-- <label for="taille">Taille :</label>
     <input type="text" id="taille" name="TAILLE" value="<?= $message['TAILLE'] ?>" required /> -->
 

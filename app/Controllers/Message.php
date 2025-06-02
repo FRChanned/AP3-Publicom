@@ -9,11 +9,13 @@ class Message extends BaseController
 {
     private $messageModel;
     private $communeModel;
+    private $prestataireModel;
 
     public function __construct()
     {
         $this->messageModel = model('MessageModel');
         $this->communeModel = model('CommuneModel');
+        $this->prestataireModel = model('Prestataire');
     }
 
     // Afficher tous les messages
@@ -32,7 +34,7 @@ class Message extends BaseController
             ]);
         }
 
-        $messages = $this->messageModel->findAll();
+        $messages = $this->messageModel->findJoinAll();
 
         // var_dump($messages);
         // die();
@@ -55,20 +57,23 @@ class Message extends BaseController
             // dd($communeNom);
             $deptNum = $communeData[0]['DEPARTEMENT'];
             // dd($deptNum);
+            $prestataires = $this->prestataireModel->findAll();
 
 
             return view('messages/ajout_message', [
                 'communeId' => $userId,
                 'nomCommune' => $communeNom,
-                'deptNum' => $deptNum
+                'deptNum' => $deptNum,
+                'listePrestataires' => $prestataires
             ]);
         } else {
 
             $communes = $this->communeModel->findAll();
             // dd($communes);
-
+            $prestataires = $this->prestataireModel->findAll();
             return view('messages/ajout_message', [
-                'listeCommunes' => $communes
+                'listeCommunes' => $communes,
+                'listePrestataires' => $prestataires
             ]);
         }
     }
@@ -86,9 +91,12 @@ class Message extends BaseController
     public function modif($id): string
     {
         $message = $this->messageModel->find($id);
+        $prestataires = $this->prestataireModel->findAll();
+
         return view('messages/modifier_message', [
             'message' => $message,
-            'listeCommune' => $this->communeModel->findAll()
+            'listeCommune' => $this->communeModel->findAll(),
+            'listePrestataires' => $prestataires
         ]);
     }
 
@@ -96,7 +104,9 @@ class Message extends BaseController
     public function update()
     {
         $messageData = $this->request->getPost();
-        $this->messageModel->save($messageData);  // Sauvegarde directement les données envoyées
+        // var_dump($messageData);
+        // die();
+        $this->messageModel->update($messageData['IDMESSAGE'], $messageData);  // Sauvegarde directement les données envoyées
         return redirect('message');
     }
 

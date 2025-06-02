@@ -12,6 +12,7 @@ class Commune extends BaseController
     private $panneauModel;
     private $messageModel;
 
+    // Constructeur Instanciant les variables userModel, communeModel, panneauModel et messageModel
     public function __construct()
     {
         $this->communeModel = model('CommuneModel');
@@ -75,6 +76,7 @@ class Commune extends BaseController
 
         return redirect('clients');
     }
+    
     //----------------------------------------------------------------------------------------------------------------------------------------//
     public function delete() //post
     {

@@ -11,25 +11,26 @@
         
     </select>  -->
     <?php
-
+    // var_dump($listePrestataires);
+    //     die();
     $user = auth()->user();
-    if (! $user->inGroup('admin')) {
-    ?>
-        <label for="IDCOMMUNE">Commune</label>
-        <input type="text" id="IDCOMMUNE" name="IDCOMMUNE" value=" <?= $communeId . ' - ' . $nomCommune . ' (' . $deptNum . ')' ?> " readonly />
-    <?php
-    }
-    else {
-    ?>
-    <label for="IDCOMMUNE">Panneau</label>
-    <select name="IDCOMMUNE">
-        <option value="">Choisissez un département</option>
-        <?php
-        foreach ($listeCommunes as $commune) {
-            echo "<option value=" . $commune['IDCOMMUNE'] . ">" . $commune['NOM'] . " (" . $commune['DEPARTEMENT'] . ")</option>";
-        }
-    }
+    if (!$user->inGroup('admin')) {
         ?>
+        <label for="IDCOMMUNE">Commune</label>
+        <input type="text" id="IDCOMMUNE" name="IDCOMMUNE"
+            value=" <?= $communeId . ' - ' . $nomCommune . ' (' . $deptNum . ')' ?> " readonly />
+        <?php
+    } else {
+        ?>
+        <label for="IDCOMMUNE">Commune</label>
+        <select name="IDCOMMUNE">
+            <option value="">Choisissez un département</option>
+            <?php
+            foreach ($listeCommunes as $commune) {
+                echo "<option value=" . $commune['IDCOMMUNE'] . ">" . $commune['NOM'] . " (" . $commune['DEPARTEMENT'] . ")</option>";
+            }
+    }
+    ?>
     </select>
 
     <label for="ETAT">État</label>
@@ -45,8 +46,15 @@
     <label for="couleur">Couleur</label>
     <input type="color" id="COULEUR" name="COULEUR" value="#ff0000">
 
-    <!-- <label for="taille">Taille :</label>
-    <input type="text" id="taille" name="TAILLE" required /> -->
+    <label for="PRESTATAIRE">Prestataire</label>
+    <select name="IDPRESTATAIRE">
+        <option value="">Choisissez un prestataire</option>
+        <?php
+        foreach ($listePrestataires as $prestataire) {
+            echo "<option value=" . $prestataire['IDPRESTATAIRE'] . ">" . $prestataire['NOMPRESTATAIRE'] . "</option>";
+        }
+        ?>
+    </select>
 
     <input type="submit" value="Valider" />
 </form>
